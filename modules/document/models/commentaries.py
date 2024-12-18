@@ -7,7 +7,7 @@ User = get_user_model()
 
 
 class Commentary(models.Model):
-    text = models.TextField()
+    text = models.TextField(max_length=1000)
     doc = models.ForeignKey(Document, on_delete=models.CASCADE)
     create_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     create_dt = models.DateTimeField(auto_now_add=True)
@@ -22,7 +22,7 @@ class Commentary(models.Model):
 
 
 class ChildCommentary(models.Model):
-    text = models.TextField()
+    text = models.TextField(max_length=1000)
     parent_comment = models.ForeignKey(Commentary, on_delete=models.CASCADE)
     create_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     create_dt = models.DateTimeField(auto_now_add=True)

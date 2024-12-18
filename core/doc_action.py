@@ -1,7 +1,6 @@
 import datetime
 from core.exception import ClientException
-from modules.tags.models import Tag
-from modules.document.models import Document, DocumentType
+from modules.document.models import Document, DocumentType, DocumentTags
 from django.conf import settings
 from core.error_messages import DocumentErrors
 
@@ -27,7 +26,7 @@ def register_tags(tags: list[str], max_tags: int | None = None) -> list:
     if cnt_tags > settings.MAX_TAGS_PER_ENTITY or (max_tags is not None and cnt_tags > max_tags):
         raise ClientException(DocumentErrors.DOC_MAX_TAGS_ERROR["ru"])
     for tag in tags:
-        added_tags.append(Tag.objects.get_or_create(name=tag)[0])
+        added_tags.append(DocumentTags.objects.get_or_create(name=tag)[0])
     return added_tags
 
 

@@ -5,7 +5,7 @@ class DocumentErrors:
         "ru": "Данный тип документа выведен из оборота."
     }
     DOC_MAX_TAGS_ERROR= {
-        "ru": f"Максимальное число тегов для одной записи: {settings.MAX_TAGS_COUNT}."
+        "ru": f"Максимальное число тегов для одной записи: {settings.MAX_TAGS_PER_ENTITY}."
     }
     
 class AuthenticationErrors:

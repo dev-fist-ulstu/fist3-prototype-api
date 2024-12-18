@@ -1,7 +1,5 @@
-from modules.reactions.serializers import DislikeSerializer, LikeSerializer
 from ..models import Document, DocumentType
 from rest_framework import serializers
-from modules.reactions.serializers import LikeSerializer, DislikeSerializer
 from modules.user.serializers import UserSerializer
 
 
@@ -14,8 +12,8 @@ class DocumentTypeSerializer(serializers.ModelSerializer):
 class DocumentSerializer(serializers.ModelSerializer):
     doc_type = DocumentTypeSerializer(many=False, read_only=True)
     tags = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    likes = LikeSerializer(many=True, read_only=True)
-    dislikes = DislikeSerializer(many=True, read_only=True)
+    likes_count = serializers.SerializerMethodField()
+    dislikes_count = serializers.SerializerMethodField()
     liked_by_me = serializers.BooleanField(default=None)
     disliked_by_me = serializers.BooleanField(default=None)
     create_by = UserSerializer(many=False, read_only=True)
@@ -25,3 +23,8 @@ class DocumentSerializer(serializers.ModelSerializer):
         model = Document
         fields = "__all__"
 
+    def get_likes_count(self, obj):
+        return obj.likes.count()
+
+    def get_dislikes_count(self, obj):
+        return obj.dislikes.count()

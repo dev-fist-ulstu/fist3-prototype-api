@@ -13,8 +13,8 @@ DEBUG = os.environ.get("DJANGO_DEV_MODE") == "true"
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
 
-JWT_ACCESS_LIFETIME = timedelta(minutes=float(os.environ.get("JWT_ACCESS_LIFETIME_IN_MINUTES")))
-JWT_REFRESH_LIFETIME = timedelta(days=float(os.environ.get("JWT_REFRESH_LIFETIME_IN_DAYS")))
+JWT_ACCESS_LIFETIME = timedelta(minutes=float(os.environ.get("JWT_ACCESS_TOKEN_LIFETIME_IN_MINUTES")))
+JWT_REFRESH_LIFETIME = timedelta(days=float(os.environ.get("JWT_REFRESH_TOKEN_LIFETIME_IN_DAYS")))
 CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS").split(",")
 CORS_ORIGIN_WHITELIST = os.environ.get("CORS_ORIGIN_WHITELIST").split(",")
 CORS_ALLOW_CREDENTIALS = True
@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     'modules.document',
     'modules.questions',
     'modules.files',
-    'modules.structure'
+    'modules.structure',
+    'modules.work'
 ]
 
 MIDDLEWARE = [

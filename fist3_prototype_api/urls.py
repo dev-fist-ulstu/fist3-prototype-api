@@ -3,11 +3,13 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from core.constants import ApiVersionPaths
+
 urlpatterns = [
-    path('api/v1/', include("modules.user.urls")),
-    path('api/v1/', include("modules.document.urls")),
-    path('api/v1/', include("modules.admin.urls")),
-    path('api/v1/', include("modules.files.urls")),
+    path(ApiVersionPaths.API_V1, include("modules.user.urls")),
+    path(ApiVersionPaths.API_V1, include("modules.document.urls")),
+    path(ApiVersionPaths.API_V1, include("modules.admin.urls")),
+    path(ApiVersionPaths.API_V1, include("modules.files.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

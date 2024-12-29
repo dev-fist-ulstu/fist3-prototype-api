@@ -7,6 +7,9 @@ class DocumentErrors:
     DOC_MAX_TAGS_ERROR= {
         "ru": f"Максимальное число тегов для одной записи: {settings.MAX_TAGS_PER_ENTITY}."
     }
+    DOC_TAGS_NOT_PRESENTED = {
+        "ru": "Необходимо добавить хотя бы 1 тег."
+    }
     
 class AuthenticationErrors:
     USER_NOT_FOUND_OR_PASSWORD_INVALID = {

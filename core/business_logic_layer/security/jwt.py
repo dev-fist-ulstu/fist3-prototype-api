@@ -1,11 +1,14 @@
+import pytz
 from django.conf import settings
 from django.contrib.auth import get_user_model
 import datetime
+
+from core.direct_sql_worker.server_time import get_server_time_now
 from modules.user.models import AccessTokens, RefreshTokens
 import jwt
 
 User = get_user_model()
-jwt_operator = jwt.JWT()
+# jwt_operator = jwt.JWT()
 
 
 class BaseToken:
@@ -58,22 +61,22 @@ class JWTPair:
 
 def encode_jwt(payload: dict, t_type: str) -> AccessToken | RefreshToken:
     if t_type == "a":
-        payload["exp_time"] = str(datetime.datetime.now(datetime.UTC) + settings.JWT_ACCESS_LIFETIME)
+        payload["exp_time"] = str(get_server_time_now() + settings.JWT_ACCESS_LIFETIME)
         payload["t_type"] = "a"
     else:
-        payload["exp_time"] = str(datetime.datetime.now(datetime.UTC) + settings.JWT_REFRESH_LIFETIME)
+        payload["exp_time"] = str(get_server_time_now() + settings.JWT_REFRESH_LIFETIME)
         payload["t_type"] = "r"
-    token = jwt_operator.encode(payload=payload, key=settings.SECRET_KEY, alg="HS256")
+    token = jwt.encode(payload=payload, key=settings.SECRET_KEY, algorithm="HS256")
     encoded_token = AccessToken(token, payload) if payload["t_type"] == "a" else RefreshToken(token, payload)
     encoded_token.is_valid = True
     return encoded_token
 
 
 def decode_jwt(token: str) -> AccessToken | RefreshToken:
-    info = jwt_operator.decode(message=token, key=settings.SECRET_KEY, algorithms=["HS256"])
+    info = jwt.decode(jwt=token, key=settings.SECRET_KEY, algorithms=["HS256"], verify=True)
     decoded_token = AccessToken(token, info) if info.get("t_type") == "a" else RefreshToken(token, info)
     decoded_token.is_valid = datetime.datetime.strptime(
-        info.get("exp_time"), "%Y-%m-%d %H:%M:%S.%f") > datetime.datetime.now(datetime.UTC)
+        info.get("exp_time"), "%Y-%m-%d %H:%M:%S.%f") > get_server_time_now()
     return decoded_token
 
 
@@ -89,10 +92,10 @@ def generate_jwt_pair(user: User) -> JWTPair:
     refresh_token = encode_jwt(refresh_info, "r")
     acc_token_model = AccessTokens.objects.create(token=access_token.token,
                                                   user_id=user.id,
-                                                  valid_to=(datetime.datetime.now(datetime.UTC) + access_token.exp_delta))
+                                                  valid_to=(get_server_time_now() + access_token.exp_delta))
     RefreshTokens.objects.create(token=refresh_token.token,
                                  user_id=user.id,
-                                 valid_to=(datetime.datetime.now(datetime.UTC) + refresh_token.exp_delta),
+                                 valid_to=(get_server_time_now() + refresh_token.exp_delta),
                                  access_id=acc_token_model.token)
     return JWTPair(access_token, refresh_token)
 

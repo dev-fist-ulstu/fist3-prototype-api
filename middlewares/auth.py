@@ -3,8 +3,8 @@ from rest_framework.authentication import BaseAuthentication
 from rest_framework.request import Request
 
 from core.exception import ClientException
-from core.security import jwt
-from core.security.jwt import AccessToken
+from core.business_logic_layer.security import jwt
+from core.business_logic_layer.security.jwt import AccessToken
 
 from modules.user.models import AccessTokens
 

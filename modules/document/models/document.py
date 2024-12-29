@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -23,6 +24,8 @@ class Document(models.Model):
     doc_type = models.ForeignKey(DocumentType, on_delete=models.CASCADE)
     json_data = models.JSONField(null=True)
     type_id = models.CharField(max_length=90, unique=True, null=True, blank=True)
+    common_identifier = models.UUIDField(default=None, blank=True, null=True)
+    viewed_times = models.IntegerField(default=0)
 
     is_moderated = models.BooleanField(default=True)
     is_ready_for_publish = models.BooleanField(default=True)

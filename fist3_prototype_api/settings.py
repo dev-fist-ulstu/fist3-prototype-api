@@ -25,6 +25,8 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 AUTH_USER_MODEL = "user.UserCustom"
 
+APPEND_SLASH = True
+
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'core.utils.searching.paginator.Paginator',
     'DEFAULT_METADATA_CLASS': 'rest_framework.metadata.SimpleMetadata',
@@ -53,10 +55,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'modules.user',
     'modules.document',
-    'modules.questions',
     'modules.files',
-    'modules.structure',
-    'modules.work'
 ]
 
 MIDDLEWARE = [
@@ -112,6 +111,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+LOCAL_TIMEZONE = os.environ.get("LOCAL_TIMEZONE")
 
 EMAIL_HOST = os.environ.get("EMAIL_HOST")
 EMAIL_PORT = os.environ.get("EMAIL_PORT")

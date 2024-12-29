@@ -23,8 +23,8 @@ class DocumentSerializer(serializers.ModelSerializer):
         model = Document
         fields = "__all__"
 
-    def get_likes_count(self, obj):
+    def get_likes_count(self, obj: Document):
         return obj.likes.count()
 
-    def get_dislikes_count(self, obj):
+    def get_dislikes_count(self, obj: Document):
         return obj.dislikes.count()

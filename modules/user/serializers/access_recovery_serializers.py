@@ -1,10 +1,9 @@
-import datetime
-
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
-from core.email import send_email_template
+from core.business_logic_layer.email import send_email_template
 from core.exception import ServerException
+from core.direct_sql_worker.server_time import get_server_time_now
 from core.utils.esia import generate_code_confirmation
 
 
@@ -17,7 +16,7 @@ class PasswordChangeSerializer(serializers.Serializer):
     def update(self, instance, validated_data):
         code = generate_code_confirmation()
         instance.code_password = code
-        instance.code_password_dt = datetime.datetime.utcnow()
+        instance.code_password_dt = get_server_time_now()
         instance.save()
         send_email_template(
             [validated_data.get("email")],

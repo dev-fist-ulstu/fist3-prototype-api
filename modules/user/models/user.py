@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from core.filemanager.path_saver import user_image_upload_to
+from core.business_logic_layer.filemanager.path_saver import user_image_upload_to
 from modules.user.models.roles import Role
 
 
@@ -10,18 +10,12 @@ class UserCustom(AbstractUser):
                                    default=None, blank=True, null=True)
     email = models.EmailField(verbose_name="Почта", unique=True)
     is_confirmed_email = models.BooleanField(default=False, verbose_name="Почта подтверждена")
-    code_email = models.TextField(verbose_name="Токен для подтверждения", 
-                                  null=True, blank=True, default=None)
-    code_email_valid_to_dt = models.DateTimeField(verbose_name="Действителен до", 
-                                         null=True, blank=True)
-    code_password = models.CharField(max_length=1024, verbose_name="Токен для замены пароля",
-                                     null=True, blank=True, default=None)
-    code_password_valid_to_dt = models.DateTimeField(verbose_name="Действителен до", 
-                                                     null=True, blank=True)
     image = models.ImageField(upload_to=user_image_upload_to, verbose_name="Аватар", 
                               blank=True, null=True, default="not-found.png")
     phone = models.CharField(max_length=15, verbose_name="Номер телефона", 
                              blank=True, null=True, default="Не указано")
+    gender = models.CharField(max_length=6, default=None, blank=True, null=True)
+    birth_date = models.DateField(blank=True, null=True)
     role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True, default=None)
 
     REQUIRED_FIELDS = ["password", "email"]
@@ -65,3 +59,12 @@ class UserAdditionalData(models.Model):
 
 class UserEducationInfo(models.Model):
     user_id = models.ForeignKey(UserCustom, on_delete=models.CASCADE)
+    started_date = models.DateField(null=True, default=None)
+    ended_date = models.DateField(null=True, default=None)
+    education_name = models.CharField(max_length=500, blank=True, null=True, default=None)
+    education_information = models.TextField(blank=True, null=True)
+
+    class Meta:
+        db_table = "user\".\"education_information"
+
+

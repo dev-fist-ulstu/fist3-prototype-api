@@ -3,14 +3,14 @@ from rest_framework import permissions, status
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from core.exception import ClientException, ServerException
-from core.security.jwt import generate_jwt_pair, decode_jwt
+from core.exception import ClientException
+from core.business_logic_layer.security.jwt import generate_jwt_pair
 from core.utils.esia import get_refresh_dict
 from core.error_messages import AuthenticationErrors
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 
-from ..models import UserCustom as User, AccessTokens, RefreshTokens
-from ..serializers import AuthResponseSerializer, ConfirmPasswordChangeSerializer, PasswordChangeSerializer
+from ..models import UserCustom as User
+from ..serializers import AuthResponseSerializer
 
 
 @api_view(["POST"])

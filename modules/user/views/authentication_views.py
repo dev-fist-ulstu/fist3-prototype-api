@@ -5,7 +5,7 @@ from rest_framework.response import Response
 
 from core.error_messages import AuthenticationErrors
 from core.exception import ClientException
-from core.security.jwt import decode_jwt, generate_jwt_pair
+from core.business_logic_layer.security.jwt import decode_jwt, generate_jwt_pair
 from core.utils.esia import get_refresh_dict
 from modules.user.models import RefreshTokens, AccessTokens
 

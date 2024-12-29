@@ -5,7 +5,9 @@ from django.conf import settings
 from core.exception import ClientException, ServerException
 import logging
 
-logging.basicConfig(filename=settings.BASE_DIR / "logs.log", level=logging.WARNING, format="[%(asctime)s] [%(levelname)s]: %(message)s")
+logging.basicConfig(filename=settings.BASE_DIR / "logs.log",
+                    level=logging.WARNING,
+                    format="[%(asctime)s] [%(levelname)s]: %(message)s")
 
 
 def err_handler(err, cte):
